@@ -1,15 +1,15 @@
 ---
-# tasks file for ibmeventlogs_folder_check.yml
+# tasks file for eventlogs_folder_check.yml
 #
-# Test Paths for a drive with the ibmeventlogs folder
+# Test Paths for a drive with the eventlogs folder
 #
 #
 # ==========================================================================
-# Test F: drive for F:\ibmeventlogs
+# Test F: drive for F:\eventlogs
 # ==========================================================================
-- name: "Check F: drive for ibmeventlogs folder"
+- name: "Check F: drive for eventlogs folder"
   win_shell: >
-    if (test-path f:\ibmeventlogs) {write-host "folder exists already"}
+    if (test-path f:\eventlogs) {write-host "folder exists already"}
     else {write-host "no folder"}
   register: check_f_drive
   ignore_errors: true
@@ -18,8 +18,8 @@
   set_fact:
    check_f_drive_out: "{{ check_f_drive.stdout_lines|list|join }}"
 
-- name: "Set F: drive IF ibmeventlogs folder was found"
-  win_shell: $ibmeventlogs_path="F:\ibmeventlogs"
+- name: "Set F: drive IF eventlogs folder was found"
+  win_shell: $eventlogs_path="F:\eventlogs"
   register: set_f_drive_out
   ignore_errors: true
   when: check_f_drive_out == "folder exists already"
@@ -27,18 +27,18 @@
 - debug:
    msg: "Checked F: drive for folder........{{ check_f_drive_out }}"
 
-- name: "set ibmeventlogs_path_out variable if folder exists"
+- name: "set eventlogs_path_out variable if folder exists"
   set_fact:
-   ibmeventlogs_path_out: "F:\\ibmeventlogs"
+   eventlogs_path_out: "F:\\eventlogs"
   when: check_f_drive_out == "folder exists already"
 
 
 # ==========================================================================
-# Test E: drive for E:\ibmeventlogs
+# Test E: drive for E:\eventlogs
 # ==========================================================================
-- name: "Check E: drive for ibmeventlogs folder"
+- name: "Check E: drive for eventlogs folder"
   win_shell: >
-    if (test-path e:\ibmeventlogs) {write-host "folder exists already"}
+    if (test-path e:\eventlogs) {write-host "folder exists already"}
     else {write-host "no folder"}
   register: check_e_drive
   ignore_errors: true
@@ -47,8 +47,8 @@
   set_fact:
    check_e_drive_out: "{{ check_e_drive.stdout_lines|list|join }}"
 
-- name: "Set e: drive IF ibmeventlogs folder was found"
-  win_shell: $ibmeventlogs_path="e:\ibmeventlogs"
+- name: "Set e: drive IF eventlogs folder was found"
+  win_shell: $eventlogs_path="e:\eventlogs"
   register: set_e_drive_out
   ignore_errors: true
   when: check_e_drive_out == "folder exists already"
@@ -56,18 +56,18 @@
 - debug:
    msg: "Checked E: drive for folder........{{ check_e_drive_out }}"
 
-- name: "set ibmeventlogs_path_out variable if folder exists"
+- name: "set eventlogs_path_out variable if folder exists"
   set_fact:
-   ibmeventlogs_path_out: "e:\\ibmeventlogs"
+   eventlogs_path_out: "e:\\eventlogs"
   when: check_e_drive_out == "folder exists already"
 
 
 # ==========================================================================
-# Test D: drive for D:\ibmeventlogs
+# Test D: drive for D:\eventlogs
 # ==========================================================================
-- name: "Check D: drive for ibmeventlogs folder"
+- name: "Check D: drive for eventlogs folder"
   win_shell: >
-    if (test-path d:\ibmeventlogs) {write-host "folder exists already"}
+    if (test-path d:\eventlogs) {write-host "folder exists already"}
     else {write-host "no folder"}
   register: check_d_drive
   ignore_errors: true
@@ -77,8 +77,8 @@
   set_fact:
    check_d_drive_out: "{{ check_d_drive.stdout_lines|list|join }}"
 
-- name: "Set D: drive IF ibmeventlogs folder was found"
-  win_shell: $ibmeventlogs_path="D\ibmeventlogs"
+- name: "Set D: drive IF eventlogs folder was found"
+  win_shell: $eventlogs_path="D\eventlogs"
   register: set_d_drive_out
   ignore_errors: true
   when: >
@@ -89,18 +89,18 @@
 - debug:
    msg: "Checked D: drive for folder........{{ check_d_drive_out }}"
 
-- name: "set ibmeventlogs_path_out variable if folder exists"
+- name: "set eventlogs_path_out variable if folder exists"
   set_fact:
-   ibmeventlogs_path_out: "D:\\ibmeventlogs"
+   eventlogs_path_out: "D:\\eventlogs"
   when: check_d_drive_out == "folder exists already"
 
 
 # ==========================================================================
-# Test C: drive for C:\ibmeventlogs
+# Test C: drive for C:\eventlogs
 # ==========================================================================
-- name: "Check C: drive for ibmeventlogs folder"
+- name: "Check C: drive for eventlogs folder"
   win_shell: >
-    if (test-path c:\ibmeventlogs) {write-host "folder exists already"}
+    if (test-path c:\eventlogs) {write-host "folder exists already"}
     else {write-host "no folder"}
   register: check_c_drive
   ignore_errors: true
@@ -113,8 +113,8 @@
   set_fact:
    check_c_drive_out: "{{ check_c_drive.stdout_lines|list|join }}"
 
-- name: "Set C: drive IF ibmeventlogs folder was found"
-  win_shell: $ibmeventlogs_path="C\ibmeventlogs"
+- name: "Set C: drive IF eventlogs folder was found"
+  win_shell: $eventlogs_path="C\eventlogs"
   register: set_c_drive_out
   ignore_errors: true
   when: >
@@ -126,8 +126,8 @@
 - debug:
    msg: "Checked C: drive for folder........{{ check_c_drive_out }}"
 
-- name: "create C:\\ibmeventlogs drive IF ibmeventlogs folder was NOT found"
-  win_shell: mkdir c:\ibmeventlogs;$ibmeventlogs_path="C\ibmeventlogs"
+- name: "create C:\\eventlogs drive IF eventlogs folder was NOT found"
+  win_shell: mkdir c:\eventlogs;$eventlogs_path="C\eventlogs"
   register: create_c_drive_out
   ignore_errors: true
   when: >
@@ -137,23 +137,23 @@
     check_d_drive_out == "no folder"
 
 
-- name: "set ibmeventlogs_path_out variable if folder exists"
+- name: "set eventlogs_path_out variable if folder exists"
   set_fact:
-   ibmeventlogs_path_out: "C:\\ibmeventlogs"
+   eventlogs_path_out: "C:\\eventlogs"
   when: >
     create_c_drive_out is not skipped or
     check_c_drive_out == "folder exists already"
 
 - debug:
-   msg: "{{ ibmeventlogs_path_out }}"
+   msg: "{{ eventlogs_path_out }}"
 
 # =============================================================================
-# Re-check the C: drive again for the ibmeventlogs folder - it not found
+# Re-check the C: drive again for the eventlogs folder - it not found
 # set the correct rc code.
 # =============================================================================
-- name: "Re-Check C: drive for ibmeventlogs folder"
+- name: "Re-Check C: drive for eventlogs folder"
   win_shell: >
-    if (test-path c:\ibmeventlogs) {write-host "folder exists already"}
+    if (test-path c:\eventlogs) {write-host "folder exists already"}
     else {write-host "no folder"}
   register: re_check_c_drive
   ignore_errors: true
@@ -163,13 +163,13 @@
    re_check_c_drive_out: "{{ re_check_c_drive.stdout_lines|list|join }}"
 
 - block:
-   - name: The ibmeventlogs Folder was Not found
+   - name: The eventlogs Folder was Not found
      set_fact:
       exec_success: false
       exec_changed: false
       exec_rc: 3000
       exec_message: >
-          "The ibmeventlogs folder was not found on any of the listed drives."
+          "The eventlogs folder was not found on any of the listed drives."
    - debug:
       msg: "{{ exec_message }}"
   when: >
