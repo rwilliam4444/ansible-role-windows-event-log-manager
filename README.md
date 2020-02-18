@@ -3,8 +3,8 @@
 
 # Description:
 The windows event log mngr role will check the server's drives (C, D, E, & F),
-at the root level, for a directory called ibmeventlogs.   If none are found then
-a folder will be created on the C: drive called c:\\ibmeventlogs.   The role
+at the root level, for a directory called eventlogs.   If none are found then
+a folder will be created on the C: drive called c:\\eventlogs.   The role
 will also ensure that the necessary ZIP utility file is on the server.  The
 role will then export the system, security and application event logs to a CSV
 file inside the noted folder previously mentioned.   It will then ZIP up the
@@ -31,7 +31,7 @@ Return Code | Success of execution| effect on target machine | Comments
 ----------|-----------------|--------|---------
 0 | True | True | event log manager on __affected_host__  was successful.
 0 | True | False | event log manager on  __affected_host__ took no action.
-3000 | False | False | could not find or create the ibmeventlogs folder.
+3000 | False | False | could not find or create the eventlogs folder.
 3001 | False | False | could not find the zip_path folder and executable.
 
 
