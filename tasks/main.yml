@@ -13,9 +13,9 @@
     exec_message: "Execution Successfully Completed."
 
 # =============================================================================
-# ibmeventlogs folder check
+# eventlogs folder check
 # =============================================================================
-- name: "ibmeventlogs folder check"
+- name: "eventlogs folder check"
   include_tasks: ibmeventlogs_folder_check.yml
 
 # =============================================================================
