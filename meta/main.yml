@@ -3,8 +3,8 @@ galaxy_info:
   author: Richard M. Williams
   role_name: ansible-role-windows-event-log-manager
   description: exports, zips-up & clears sec, app, sys event logs
-  company: IBM Corp
-  license: IBM Intellectual Property.
+  company: 
+  license: 
   min_ansible_version: 1.8
   platforms:
     - name: Windows
