@@ -2,13 +2,13 @@
 # tasks file for zip_up_security_application_system_logs.yml
 #
 # ==========================================================================
-# zip up $ibmeventlogs_path\security_$date.csv
+# zip up $eventlogs_path\security_$date.csv
 # ==========================================================================
-- name: "Zip up $ibmeventlogs_path\\security_$date.csv"
+- name: "Zip up $eventlogs_path\\security_$date.csv"
   win_shell: >
     {{ zip_path }} a -tzip
-    {{ ibmeventlogs_path_out }}\security_{{ date_out }}.zip
-    {{ ibmeventlogs_path_out }}\security_{{ date_out }}.csv
+    {{ eventlogs_path_out }}\security_{{ date_out }}.zip
+    {{ eventlogs_path_out }}\security_{{ date_out }}.csv
   register: zip_security
   ignore_errors: true
 
@@ -23,13 +23,13 @@
 
 
 # ==========================================================================
-# zip up $ibmeventlogs_path\application_$date.csv
+# zip up $eventlogs_path\application_$date.csv
 # ==========================================================================
-- name: "Zip up $ibmeventlogs_path\\application_$date.csv"
+- name: "Zip up $eventlogs_path\\application_$date.csv"
   win_shell: >
     {{ zip_path }} a -tzip
-    {{ ibmeventlogs_path_out }}\application_{{ date_out }}.zip
-    {{ ibmeventlogs_path_out }}\application_{{ date_out }}.csv
+    {{ eventlogs_path_out }}\application_{{ date_out }}.zip
+    {{ eventlogs_path_out }}\application_{{ date_out }}.csv
   register: zip_application
   ignore_errors: true
 
@@ -44,13 +44,13 @@
 
 
 # ==========================================================================
-# zip up $ibmeventlogs_path\system_$date.csv
+# zip up $eventlogs_path\system_$date.csv
 # ==========================================================================
-- name: "Zip up $ibmeventlogs_path\\system_$date.csv"
+- name: "Zip up $eventlogs_path\\system_$date.csv"
   win_shell: >
     {{ zip_path }} a -tzip
-    {{ ibmeventlogs_path_out }}\system_{{ date_out }}.zip
-    {{ ibmeventlogs_path_out }}\system_{{ date_out }}.csv
+    {{ eventlogs_path_out }}\system_{{ date_out }}.zip
+    {{ eventlogs_path_out }}\system_{{ date_out }}.csv
   register: zip_system
   ignore_errors: true
 
