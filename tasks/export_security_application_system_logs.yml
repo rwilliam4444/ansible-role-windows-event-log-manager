@@ -2,12 +2,12 @@
 # tasks file for export_security_application_system_logs.yml
 #
 # ==========================================================================
-# Export-Csv $ibmeventlogs_path\security_$date.csv
+# Export-Csv $eventlogs_path\security_$date.csv
 # ==========================================================================
-- name: "Export-Csv $ibmeventlogs_path\\security_$date.csv"
+- name: "Export-Csv $eventlogs_path\\security_$date.csv"
   win_shell: >
     Get-EventLog -LogName Security -ErrorAction SilentlyContinue |
-    Export-Csv "{{ ibmeventlogs_path_out }}\security_{{ date_out }}.csv"
+    Export-Csv "{{ eventlogs_path_out }}\security_{{ date_out }}.csv"
   register: export_security
   ignore_errors: true
 
@@ -22,12 +22,12 @@
 
 
 # ==========================================================================
-# Export-Csv $ibmeventlogs_path\application_$date.csv
+# Export-Csv $eventlogs_path\application_$date.csv
 # ==========================================================================
-- name: "Export-Csv $ibmeventlogs_path\\application_$date.csv"
+- name: "Export-Csv $eventlogs_path\\application_$date.csv"
   win_shell: >
     Get-EventLog -LogName Security -ErrorAction SilentlyContinue |
-    Export-Csv "{{ ibmeventlogs_path_out }}\application_{{ date_out }}.csv"
+    Export-Csv "{{ eventlogs_path_out }}\application_{{ date_out }}.csv"
   register: export_application
   ignore_errors: true
 
@@ -42,12 +42,12 @@
 
 
 # ==========================================================================
-# Export-Csv $ibmeventlogs_path\system_$date.csv
+# Export-Csv $eventlogs_path\system_$date.csv
 # ==========================================================================
-- name: "Export-Csv $ibmeventlogs_path\\system_$date.csv"
+- name: "Export-Csv $eventlogs_path\\system_$date.csv"
   win_shell: >
     Get-EventLog -LogName Security -ErrorAction SilentlyContinue |
-    Export-Csv "{{ ibmeventlogs_path_out }}\system_{{ date_out }}.csv"
+    Export-Csv "{{ eventlogs_path_out }}\system_{{ date_out }}.csv"
   register: export_system
   ignore_errors: true
 
