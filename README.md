@@ -22,7 +22,7 @@ Windows Ansible related pre-requisites
 Parameter | Choices/Defaults|Comments
 ----------|-----------------|--------
 __zip_path__  (string)| "C:\\Scripts\\Sec_Log_Archive\\7z" | default zip path
-__number_days_before_deletion__ (number) | 270 | # of days before it will delete
+__number_days_before_deletion__ (int) | 270 | # of days before it will delete
 
 
 # Results from execution
