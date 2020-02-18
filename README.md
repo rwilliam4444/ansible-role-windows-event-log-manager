@@ -43,4 +43,4 @@ Return Code | Success of execution| effect on target machine | Comments
 
 
 # Author Information:
-Richard M. Williams (rmwill@us.ibm.com)
+Richard M. Williams (williamsitv@yahoo.com)
