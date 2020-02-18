@@ -1,0 +1,1 @@
+# ansible-role-windows-event-log-manager
