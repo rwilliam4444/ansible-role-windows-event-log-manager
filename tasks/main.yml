@@ -96,7 +96,7 @@
 # =============================================================================
 - name: "Delete CSV files"
   win_shell: >
-    gci -path {{ ibmeventlogs_path_out }} *_{{ date_out }}.csv |
+    gci -path {{ eventlogs_path_out }} *_{{ date_out }}.csv |
     Remove-Item -force
   register: date
   ignore_errors: true
@@ -108,7 +108,7 @@
 - name: "Set the expiration day limit variable & delete old files accordingly"
   win_shell: >
     $limit = (Get-Date).AddDays(-{{ number_days_before_deletion }}); $limit;
-    Get-ChildItem -Path {{ ibmeventlogs_path_out }} -Recurse -Force |
+    Get-ChildItem -Path {{ eventlogs_path_out }} -Recurse -Force |
     Where-Object { !$_.PSIsContainer -and $_.CreationTime -lt $limit } |
     Remove-Item -Force
   register: limit_days
