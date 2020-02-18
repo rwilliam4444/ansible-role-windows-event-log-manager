@@ -1,0 +1,64 @@
+---
+# tasks file for zip_up_security_application_system_logs.yml
+#
+# ==========================================================================
+# zip up $ibmeventlogs_path\security_$date.csv
+# ==========================================================================
+- name: "Zip up $ibmeventlogs_path\\security_$date.csv"
+  win_shell: >
+    {{ zip_path }} a -tzip
+    {{ ibmeventlogs_path_out }}\security_{{ date_out }}.zip
+    {{ ibmeventlogs_path_out }}\security_{{ date_out }}.csv
+  register: zip_security
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   zip_security_out: "{{ zip_security.stdout_lines|list|join }}"
+
+- debug:
+   msg: >
+    "Any Zip security log output will be listed here........
+    {{ zip_security_out }}"
+
+
+# ==========================================================================
+# zip up $ibmeventlogs_path\application_$date.csv
+# ==========================================================================
+- name: "Zip up $ibmeventlogs_path\\application_$date.csv"
+  win_shell: >
+    {{ zip_path }} a -tzip
+    {{ ibmeventlogs_path_out }}\application_{{ date_out }}.zip
+    {{ ibmeventlogs_path_out }}\application_{{ date_out }}.csv
+  register: zip_application
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   zip_application_out: "{{ zip_application.stdout_lines|list|join }}"
+
+- debug:
+   msg: >
+    "Any Zip application log output will be listed here........
+    {{ zip_application_out }}"
+
+
+# ==========================================================================
+# zip up $ibmeventlogs_path\system_$date.csv
+# ==========================================================================
+- name: "Zip up $ibmeventlogs_path\\system_$date.csv"
+  win_shell: >
+    {{ zip_path }} a -tzip
+    {{ ibmeventlogs_path_out }}\system_{{ date_out }}.zip
+    {{ ibmeventlogs_path_out }}\system_{{ date_out }}.csv
+  register: zip_system
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   zip_system_out: "{{ zip_system.stdout_lines|list|join }}"
+
+- debug:
+   msg: >
+    "Any Zip system log output will be listed here........
+    {{ zip_system_out }}"

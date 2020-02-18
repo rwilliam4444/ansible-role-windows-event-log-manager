@@ -1,0 +1,58 @@
+---
+# tasks file for clear_security_application_system_logs.yml
+#
+# ==========================================================================
+# clear-eventlog -log security
+# ==========================================================================
+- name: "clear-eventlog -log security "
+  win_shell: >
+    clear-eventlog -log security
+  register: clear_security
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   clear_security_out: "{{ clear_security.stdout_lines|list|join }}"
+
+- debug:
+   msg: >
+    "Any Clear security log output will be listed here........
+    {{ clear_security_out }}"
+
+
+# ==========================================================================
+# clear-eventlog -log application
+# ==========================================================================
+- name: "clear-eventlog -log application"
+  win_shell: >
+    clear-eventlog -log application
+  register: clear_application
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   clear_application_out: "{{ clear_application.stdout_lines|list|join }}"
+
+- debug:
+   msg: >
+    "Any Clear application log output will be listed here........
+    {{ clear_application_out }}"
+
+
+# ==========================================================================
+# clear-eventlog -log system
+# ==========================================================================
+- name: "clear-eventlog -log system"
+  win_shell: >
+    clear-eventlog -log system
+  register: clear_system
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   clear_system_out: "{{ clear_system.stdout_lines|list|join }}"
+
+- debug:
+   msg: >
+    "Any Clear system log output will be listed here........
+    {{ clear_system_out }}"

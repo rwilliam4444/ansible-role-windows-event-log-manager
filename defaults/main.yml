@@ -1,0 +1,4 @@
+---
+# defaults file for ansible-role-windows-event-log-manager
+zip_path: "C:\\Scripts\\Sec_Log_Archive\\7z"
+number_days_before_deletion: 270

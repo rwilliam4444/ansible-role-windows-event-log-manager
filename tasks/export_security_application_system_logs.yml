@@ -1,0 +1,61 @@
+---
+# tasks file for export_security_application_system_logs.yml
+#
+# ==========================================================================
+# Export-Csv $ibmeventlogs_path\security_$date.csv
+# ==========================================================================
+- name: "Export-Csv $ibmeventlogs_path\\security_$date.csv"
+  win_shell: >
+    Get-EventLog -LogName Security -ErrorAction SilentlyContinue |
+    Export-Csv "{{ ibmeventlogs_path_out }}\security_{{ date_out }}.csv"
+  register: export_security
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   export_security_out: "{{ export_security.stdout_lines|list|join }}"
+
+- debug:
+   msg: >
+    "Any Export security log output will be listed here........
+    {{ export_security_out }}"
+
+
+# ==========================================================================
+# Export-Csv $ibmeventlogs_path\application_$date.csv
+# ==========================================================================
+- name: "Export-Csv $ibmeventlogs_path\\application_$date.csv"
+  win_shell: >
+    Get-EventLog -LogName Security -ErrorAction SilentlyContinue |
+    Export-Csv "{{ ibmeventlogs_path_out }}\application_{{ date_out }}.csv"
+  register: export_application
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   export_application_out: "{{ export_application.stdout_lines|list|join }}"
+
+- debug:
+   msg: >
+    "Any Export application log output will be listed here........
+    {{ export_application_out }}"
+
+
+# ==========================================================================
+# Export-Csv $ibmeventlogs_path\system_$date.csv
+# ==========================================================================
+- name: "Export-Csv $ibmeventlogs_path\\system_$date.csv"
+  win_shell: >
+    Get-EventLog -LogName Security -ErrorAction SilentlyContinue |
+    Export-Csv "{{ ibmeventlogs_path_out }}\system_{{ date_out }}.csv"
+  register: export_system
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   export_system_out: "{{ export_system.stdout_lines|list|join }}"
+
+- debug:
+   msg: >
+    "Any Export system log output will be listed here........
+    {{ export_system_out }}"

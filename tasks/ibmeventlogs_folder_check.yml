@@ -1,0 +1,179 @@
+---
+# tasks file for ibmeventlogs_folder_check.yml
+#
+# Test Paths for a drive with the ibmeventlogs folder
+#
+#
+# ==========================================================================
+# Test F: drive for F:\ibmeventlogs
+# ==========================================================================
+- name: "Check F: drive for ibmeventlogs folder"
+  win_shell: >
+    if (test-path f:\ibmeventlogs) {write-host "folder exists already"}
+    else {write-host "no folder"}
+  register: check_f_drive
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   check_f_drive_out: "{{ check_f_drive.stdout_lines|list|join }}"
+
+- name: "Set F: drive IF ibmeventlogs folder was found"
+  win_shell: $ibmeventlogs_path="F:\ibmeventlogs"
+  register: set_f_drive_out
+  ignore_errors: true
+  when: check_f_drive_out == "folder exists already"
+
+- debug:
+   msg: "Checked F: drive for folder........{{ check_f_drive_out }}"
+
+- name: "set ibmeventlogs_path_out variable if folder exists"
+  set_fact:
+   ibmeventlogs_path_out: "F:\\ibmeventlogs"
+  when: check_f_drive_out == "folder exists already"
+
+
+# ==========================================================================
+# Test E: drive for E:\ibmeventlogs
+# ==========================================================================
+- name: "Check E: drive for ibmeventlogs folder"
+  win_shell: >
+    if (test-path e:\ibmeventlogs) {write-host "folder exists already"}
+    else {write-host "no folder"}
+  register: check_e_drive
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   check_e_drive_out: "{{ check_e_drive.stdout_lines|list|join }}"
+
+- name: "Set e: drive IF ibmeventlogs folder was found"
+  win_shell: $ibmeventlogs_path="e:\ibmeventlogs"
+  register: set_e_drive_out
+  ignore_errors: true
+  when: check_e_drive_out == "folder exists already"
+
+- debug:
+   msg: "Checked E: drive for folder........{{ check_e_drive_out }}"
+
+- name: "set ibmeventlogs_path_out variable if folder exists"
+  set_fact:
+   ibmeventlogs_path_out: "e:\\ibmeventlogs"
+  when: check_e_drive_out == "folder exists already"
+
+
+# ==========================================================================
+# Test D: drive for D:\ibmeventlogs
+# ==========================================================================
+- name: "Check D: drive for ibmeventlogs folder"
+  win_shell: >
+    if (test-path d:\ibmeventlogs) {write-host "folder exists already"}
+    else {write-host "no folder"}
+  register: check_d_drive
+  ignore_errors: true
+  when: check_f_drive_out == "no folder"
+
+- name: "set output variable"
+  set_fact:
+   check_d_drive_out: "{{ check_d_drive.stdout_lines|list|join }}"
+
+- name: "Set D: drive IF ibmeventlogs folder was found"
+  win_shell: $ibmeventlogs_path="D\ibmeventlogs"
+  register: set_d_drive_out
+  ignore_errors: true
+  when: >
+    check_d_drive_out == "folder exists already" and
+    check_f_drive_out == "no folder" and
+    check_e_drive_out == "no folder"
+
+- debug:
+   msg: "Checked D: drive for folder........{{ check_d_drive_out }}"
+
+- name: "set ibmeventlogs_path_out variable if folder exists"
+  set_fact:
+   ibmeventlogs_path_out: "D:\\ibmeventlogs"
+  when: check_d_drive_out == "folder exists already"
+
+
+# ==========================================================================
+# Test C: drive for C:\ibmeventlogs
+# ==========================================================================
+- name: "Check C: drive for ibmeventlogs folder"
+  win_shell: >
+    if (test-path c:\ibmeventlogs) {write-host "folder exists already"}
+    else {write-host "no folder"}
+  register: check_c_drive
+  ignore_errors: true
+  when: >
+    check_f_drive_out == "no folder" and
+    check_e_drive_out == "no folder" and
+    check_d_drive_out == "no folder"
+
+- name: "set output variable"
+  set_fact:
+   check_c_drive_out: "{{ check_c_drive.stdout_lines|list|join }}"
+
+- name: "Set C: drive IF ibmeventlogs folder was found"
+  win_shell: $ibmeventlogs_path="C\ibmeventlogs"
+  register: set_c_drive_out
+  ignore_errors: true
+  when: >
+    check_c_drive_out == "folder exists already" and
+    check_f_drive_out == "no folder" and
+    check_e_drive_out == "no folder" and
+    check_d_drive_out == "no folder"
+
+- debug:
+   msg: "Checked C: drive for folder........{{ check_c_drive_out }}"
+
+- name: "create C:\\ibmeventlogs drive IF ibmeventlogs folder was NOT found"
+  win_shell: mkdir c:\ibmeventlogs;$ibmeventlogs_path="C\ibmeventlogs"
+  register: create_c_drive_out
+  ignore_errors: true
+  when: >
+    check_c_drive_out == "no folder" and
+    check_f_drive_out == "no folder" and
+    check_e_drive_out == "no folder" and
+    check_d_drive_out == "no folder"
+
+
+- name: "set ibmeventlogs_path_out variable if folder exists"
+  set_fact:
+   ibmeventlogs_path_out: "C:\\ibmeventlogs"
+  when: >
+    create_c_drive_out is not skipped or
+    check_c_drive_out == "folder exists already"
+
+- debug:
+   msg: "{{ ibmeventlogs_path_out }}"
+
+# =============================================================================
+# Re-check the C: drive again for the ibmeventlogs folder - it not found
+# set the correct rc code.
+# =============================================================================
+- name: "Re-Check C: drive for ibmeventlogs folder"
+  win_shell: >
+    if (test-path c:\ibmeventlogs) {write-host "folder exists already"}
+    else {write-host "no folder"}
+  register: re_check_c_drive
+  ignore_errors: true
+
+- name: "set output variable"
+  set_fact:
+   re_check_c_drive_out: "{{ re_check_c_drive.stdout_lines|list|join }}"
+
+- block:
+   - name: The ibmeventlogs Folder was Not found
+     set_fact:
+      exec_success: false
+      exec_changed: false
+      exec_rc: 3000
+      exec_message: >
+          "The ibmeventlogs folder was not found on any of the listed drives."
+   - debug:
+      msg: "{{ exec_message }}"
+  when: >
+    re_check_c_drive_out == "no folder" and
+    check_f_drive_out == "no folder" and
+    check_e_drive_out == "no folder" and
+    check_d_drive_out == "no folder"

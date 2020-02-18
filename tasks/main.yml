@@ -1,0 +1,125 @@
+---
+# tasks file for ansible-role-windows-event-log-manager
+
+# exec_success - True or False depending on whether role completed successfully.
+# exec_changed - False NO Corrective actions for this role.
+# exec_rc - return code
+# exec_message - message
+- name: Setting the Initial Facts
+  set_fact:
+    exec_success: true
+    exec_changed: true
+    exec_rc: 0
+    exec_message: "Execution Successfully Completed."
+
+# =============================================================================
+# ibmeventlogs folder check
+# =============================================================================
+- name: "ibmeventlogs folder check"
+  include_tasks: ibmeventlogs_folder_check.yml
+
+# =============================================================================
+# Test for Zip executable file
+# =============================================================================
+- name: "Check if zip path exists"
+  win_shell: >
+    if (test-path -path {{ zip_path }}*)
+    {write-host "zip_path exists already"}
+    else {write-host "no zip_path found"}
+  register: check_zip_path
+  ignore_errors: true
+  when: >
+    exec_rc == 0
+
+- name: "set output variable"
+  set_fact:
+    check_zip_path_out: "{{ check_zip_path.stdout_lines|list|join }}"
+  when: exec_rc == 0
+
+- debug:
+    msg: "Zip Path check results........{{ check_zip_path_out }}"
+  when: >
+    exec_rc == 0
+
+- block:
+    - name: Zip path not found
+      set_fact:
+        exec_success: false
+        exec_changed: false
+        exec_rc: 3001
+        exec_message: >
+          "Zip path not found"
+    - debug: var=exec_message
+  when: check_zip_path_out == "no zip_path found"
+
+# =============================================================================
+# Get Date in requested format
+# =============================================================================
+- name: "Get date in requested format"
+  win_shell: get-date -f yyyy-MM-ddTHHmmss
+  register: date
+  ignore_errors: true
+  when: exec_rc == 0
+
+- name: "set Date output variable"
+  set_fact:
+    date_out: "{{ date.stdout_lines|list|join }}"
+  when: exec_rc == 0
+
+- debug:
+    msg: "Date Set........{{ date_out }}"
+  when: exec_rc == 0
+
+# =============================================================================
+# export security, application & system event logs
+# =============================================================================
+- name: "export security, application & system event logs"
+  include_tasks: export_security_application_system_logs.yml
+  when: exec_rc == 0
+
+# =============================================================================
+# zip up security, application & system event log files
+# =============================================================================
+- name: "zip up security, application & system event logs"
+  include_tasks: zip_up_security_application_system_logs.yml
+  when: exec_rc == 0
+
+# =============================================================================
+# clear security, application & system event log files
+# =============================================================================
+- name: "zip up security, application & system event logs"
+  include_tasks: clear_security_application_system_logs.yml
+  when: exec_rc == 0
+
+# =============================================================================
+# Delete CSV files
+# =============================================================================
+- name: "Delete CSV files"
+  win_shell: >
+    gci -path {{ ibmeventlogs_path_out }} *_{{ date_out }}.csv |
+    Remove-Item -force
+  register: date
+  ignore_errors: true
+  when: exec_rc == 0
+
+# =============================================================================
+# Set the expiration day limit variable and delete old files accordingly
+# =============================================================================
+- name: "Set the expiration day limit variable & delete old files accordingly"
+  win_shell: >
+    $limit = (Get-Date).AddDays(-{{ number_days_before_deletion }}); $limit;
+    Get-ChildItem -Path {{ ibmeventlogs_path_out }} -Recurse -Force |
+    Where-Object { !$_.PSIsContainer -and $_.CreationTime -lt $limit } |
+    Remove-Item -Force
+  register: limit_days
+  ignore_errors: true
+  when: exec_rc == 0
+
+- name: "set Date output variable"
+  set_fact:
+    limit_days_out: "{{ limit_days.stdout_lines|list|join }}"
+  when: exec_rc == 0
+
+- debug:
+    msg: "Files older than this date will be deleted......{{ limit_days_out }}"
+  when: exec_rc == 0
